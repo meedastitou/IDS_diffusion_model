@@ -1,4 +1,5 @@
 import os, sys
+import numpy as np
 import torch
 from src.logger import logging
 from src.exception import CustmeException
@@ -57,10 +58,20 @@ if __name__ == "__main__":
 
     categorical_cols = ['protocol_type', 'service', 'flag', 'label']
 
-    # Decode categorical features
+   # Décodage des caractéristiques catégorielles
     for col in categorical_cols:
-        generated_df[col] = encoder.inverse_transform(generated_df[col].astype(int))
+        # Limiter les valeurs générées aux classes valides
+        valid_classes = np.arange(len(encoder.classes_))
+        generated_df[col] = np.round(generated_df[col]).astype(int)
+        generated_df[col] = np.clip(generated_df[col], valid_classes.min(), valid_classes.max())
+        
+        # Décodage des valeurs
+        generated_df[col] = encoder.inverse_transform(generated_df[col])
 
-    # Save or inspect the generated data
+    # Afficher les données générées
     print(generated_df.head())
+
+
+    # evaluate_data(generateData, "artifacts/data_ingestion/raw.gz")
+
 

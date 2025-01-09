@@ -23,7 +23,7 @@ class DiffusionModel(nn.Module):
     def sample(self, batch_size, num_steps=1000):
         with torch.no_grad():
             # Commence avec du bruit aléatoire
-            x = torch.randn(batch_size, self.net[-1].out_features)
+            x = torch.randn(batch_size, self.net[-1].out_features, device=next(self.parameters()).device)
             for _ in range(num_steps):
                 predicted_noise = self(x)
                 x = x - 0.01 * predicted_noise  # Étape de diffusion inverse

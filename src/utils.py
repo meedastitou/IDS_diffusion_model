@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, precision_recall_c
 from sklearn.model_selection import GridSearchCV
 import torch
 from torch.utils.data import TensorDataset
-
+import pandas as pd
 
 def save_object(file_path, obj):
     try:
@@ -65,3 +65,24 @@ def add_progressive_noise(data, t, beta_schedule):
 def linear_beta_schedule(T, start=0.0001, end=0.02):
     """Renvoie une planification linéaire des coefficients beta."""
     return torch.linspace(start, end, T)
+
+# def convert_generated_data_to_claire(generated_data):
+#     # Convertir les données générées en DataFrame
+#     generated_data_np = generated_data.cpu().numpy()
+#     generated_df = pd.DataFrame(generated_data_np, columns=columns)
+
+#     # Inverse scaling pour les caractéristiques continues
+#     generated_df[continuous_cols] = scaler.inverse_transform(generated_df[continuous_cols])
+
+#     # Décodage des caractéristiques catégorielles
+#     for col in cat_cols:
+#         # Limiter les valeurs générées aux classes valides
+#         valid_classes = np.arange(len(encoder.classes_))
+#         generated_df[col] = np.round(generated_df[col]).astype(int)
+#         generated_df[col] = np.clip(generated_df[col], valid_classes.min(), valid_classes.max())
+        
+#         # Décodage des valeurs
+#         generated_df[col] = encoder.inverse_transform(generated_df[col])
+
+#         # Afficher les données générées
+#         print(generated_df.head())
